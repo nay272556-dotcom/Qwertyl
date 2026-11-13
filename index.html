@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>WORD QUEST – English Vocabulary Adventure</title>
+<style>
+:root{--n:#241552;--p:#6d4bd8;--m:#2fcf8f;--s:#ffc83d;--c:#ff5d7a;--w:#fffaf0;--b:#38bdf8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;color:var(--n);background:radial-gradient(circle at 15% 12%,#fff8 0 2px,#0000 3px) 0 0/90px 90px,linear-gradient(#2a1a68,#5b3cc4 50%,#38bdf8 100%) fixed;overflow-x:hidden}
+body:after{content:"";position:fixed;left:-10%;right:-10%;bottom:-60px;height:140px;background:radial-gradient(ellipse at 30% 100%,#2fcf8f 0 55%,#0000 56%),radial-gradient(ellipse at 75% 100%,#1fae78 0 50%,#0000 51%);pointer-events:none;z-index:0}
+#app{position:relative;z-index:1;max-width:720px;margin:auto;padding:max(14px,env(safe-area-inset-top)) 14px max(90px,env(safe-area-inset-bottom))}
+h1,h2{margin:.2em 0}
+.logo{font-size:clamp(40px,12vw,72px);font-weight:900;letter-spacing:2px;text-align:center;color:var(--s);text-shadow:0 4px 0 #b4570a,0 8px 0 #0004;line-height:1}
+.logo small{display:block;font-size:.3em;color:#fff;text-shadow:none;letter-spacing:3px;margin-top:6px}
+.center{text-align:center}.mas{display:block;margin:10px auto;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.btn{display:block;width:100%;border:0;border-radius:22px;padding:16px;margin:10px 0;font:900 20px inherit;font-family:inherit;color:#fff;background:var(--p);box-shadow:0 6px 0 #3b2596;cursor:pointer;transition:transform .1s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #3b2596}
+.btn.g{background:var(--m);box-shadow:0 6px 0 #14855c}.btn.y{background:var(--s);color:var(--n);box-shadow:0 6px 0 #b8860b}.btn.r{background:var(--c);box-shadow:0 6px 0 #b0304a}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 40%}
+.chip{background:#fff3;color:#fff;border-radius:99px;padding:6px 12px;font-weight:800;font-size:15px}
+.hud{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.card{background:var(--w);border-radius:28px;padding:18px;margin:12px 0;box-shadow:0 8px 0 #0003}
+.big{font-size:clamp(80px,26vw,130px);text-align:center;line-height:1.1}
+.ins{color:#fff;text-align:center;font-weight:800;font-size:18px;margin:8px 0}
+.top{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800}
+.ib{width:44px;height:44px;border-radius:14px;border:0;background:#fff3;color:#fff;font-size:20px;cursor:pointer}
+.bar{flex:1;height:14px;border-radius:9px;background:#0004;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--s),var(--m));transition:width .4s}
+.opt{border:3px solid #e6dcff;background:#fff;border-radius:20px;padding:16px;font:800 22px inherit;font-family:inherit;color:var(--n);cursor:pointer;min-height:64px}
+.opt.ok{background:#c8f7e2;border-color:var(--m)}.opt.no{background:#ffd9e0;border-color:var(--c);animation:sk .4s}
+.opt.e{font-size:48px}
+@keyframes sk{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.slots,.pool{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.slot{min-width:46px;height:54px;border-radius:14px;border:3px dashed #b9a6f5;display:flex;align-items:center;justify-content:center;font:900 26px inherit;font-family:inherit;padding:0 8px;background:#fff}
+.slot.f{border-style:solid;background:#efe8ff}.slot.cur{border-color:var(--s)}.shake{animation:sk .4s}
+.tile{min-width:46px;height:54px;border-radius:14px;border:0;background:var(--b);color:#fff;font:900 24px inherit;font-family:inherit;padding:0 10px;box-shadow:0 4px 0 #1b7fb0;cursor:pointer}.tile.u{opacity:.25}
+.kb{display:flex;flex-direction:column;gap:6px;align-items:center}.kb div{display:flex;gap:5px}.kb .tile{min-width:30px;height:46px;padding:0 6px;font-size:20px}
+.fb{border-radius:24px;padding:14px;margin:12px 0;text-align:center;font-weight:800;animation:up .3s}
+.fb.g{background:#c8f7e2}.fb.b{background:#ffe3e8}.fb b{font-size:26px}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+.map{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.node{aspect-ratio:1;border-radius:50%;border:0;font:900 20px inherit;font-family:inherit;background:var(--s);color:var(--n);box-shadow:0 5px 0 #b8860b;cursor:pointer;position:relative}
+.node.l{background:#9d92c9;color:#fff;box-shadow:0 5px 0 #6b5f98}.node small{position:absolute;bottom:-2px;left:0;right:0;font-size:11px}
+.stage{color:#fff;font-weight:900;margin:16px 0 6px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cat{background:var(--w);border:0;border-radius:22px;padding:14px;text-align:center;font:800 16px inherit;font-family:inherit;color:var(--n);cursor:pointer;box-shadow:0 5px 0 #0003}.cat span{font-size:42px;display:block}.cat.l{opacity:.55}
+.mchips{display:flex;gap:6px;overflow-x:auto;padding:4px 0}.mchips .chip{white-space:nowrap;cursor:pointer;border:2px solid transparent}.mchips .chip.on{background:var(--s);color:var(--n)}
+.ach{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #0001}.ach span{font-size:36px}.ach.l{opacity:.35;filter:grayscale(1)}
+.sb{height:12px;border-radius:6px;background:#e6dcff;overflow:hidden;margin:3px 0 10px}.sb i{display:block;height:100%;background:var(--m)}
+.tg{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+.conf{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:9;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+.stars{font-size:54px;text-align:center}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+button:focus-visible{outline:4px solid var(--s)}
+</style></head><body><div id="app"></div>
+<script>
+"use strict";
+/* ===== SELLER CONFIG – edit here / Ubah identitas penjual di sini ===== */
+const CFG={seller:"Nama Penjual / Seller Name",contact:"email@contoh.com",version:"1.0",
+license:{id:"Lisensi penggunaan pribadi/keluarga. Dilarang menjual ulang atau membagikan file ini tanpa izin penjual.",en:"Personal/family use license. Resale or redistribution of this file without the seller's permission is prohibited."}};
+/* ===== DATA ===== */
+const CD=[["🦁","Animals","Hewan","dog|Anjing|🐶;cat|Kucing|🐱;bird|Burung|🐦;fish|Ikan|🐟;cow|Sapi|🐮;horse|Kuda|🐴;duck|Bebek|🦆;frog|Katak|🐸"],
+["🍎","Fruits","Buah","apple|Apel|🍎;banana|Pisang|🍌;grape|Anggur|🍇;orange|Jeruk|🍊;lemon|Lemon|🍋;mango|Mangga|🥭;pear|Pir|🍐;melon|Melon|🍈"],
+["🎨","Colors","Warna","red|Merah|🔴;blue|Biru|🔵;green|Hijau|🟢;yellow|Kuning|🟡;orange|Oranye|🟠;purple|Ungu|🟣;brown|Cokelat|🟤;black|Hitam|⚫"],
+["🔢","Numbers","Angka","one|Satu|1️⃣;two|Dua|2️⃣;three|Tiga|3️⃣;four|Empat|4️⃣;five|Lima|5️⃣;six|Enam|6️⃣;seven|Tujuh|7️⃣;eight|Delapan|8️⃣"],
+["🍕","Food & Drinks","Makanan & Minuman","bread|Roti|🍞;milk|Susu|🥛;egg|Telur|🥚;rice|Nasi|🍚;cake|Kue|🍰;juice|Jus|🧃;pizza|Pizza|🍕;cheese|Keju|🧀"],
+["🖐️","Body Parts","Anggota Tubuh","eye|Mata|👁️;ear|Telinga|👂;nose|Hidung|👃;mouth|Mulut|👄;hand|Tangan|✋;foot|Kaki|🦶;tooth|Gigi|🦷;brain|Otak|🧠"],
+["👨‍👩‍👧","Family","Keluarga","mother|Ibu|👩;father|Ayah|👨;baby|Bayi|👶;girl|Anak perempuan|👧;boy|Anak laki-laki|👦;grandma|Nenek|👵;grandpa|Kakek|👴;family|Keluarga|👨‍👩‍👧"],
+["🚗","Transportation","Transportasi","car|Mobil|🚗;bus|Bus|🚌;train|Kereta|🚆;plane|Pesawat|✈️;boat|Perahu|⛵;bike|Sepeda|🚲;truck|Truk|🚚;rocket|Roket|🚀"],
+["✏️","School Objects","Perlengkapan Sekolah","book|Buku|📖;pencil|Pensil|✏️;bag|Tas|🎒;ruler|Penggaris|📏;scissors|Gunting|✂️;clock|Jam|⏰;globe|Bola dunia|🌍;computer|Komputer|💻"],
+["🏃","Daily Activities","Kegiatan Harian","eat|Makan|🍽️;sleep|Tidur|😴;run|Berlari|🏃;swim|Berenang|🏊;read|Membaca|📚;sing|Bernyanyi|🎤;dance|Menari|💃;cook|Memasak|🍳"],
+["🌳","Nature","Alam","sun|Matahari|☀️;moon|Bulan|🌙;star|Bintang|⭐;tree|Pohon|🌳;flower|Bunga|🌸;rain|Hujan|🌧️;cloud|Awan|☁️;mountain|Gunung|⛰️"],
+["🧑‍⚕️","Professions","Profesi","doctor|Dokter|🧑‍⚕️;teacher|Guru|🧑‍🏫;chef|Koki|🧑‍🍳;farmer|Petani|🧑‍🌾;pilot|Pilot|🧑‍✈️;firefighter|Pemadam kebakaran|🧑‍🚒;artist|Seniman|🧑‍🎨;scientist|Ilmuwan|🧑‍🔬"]];
+const CATS=CD.map(c=>({e:c[0],en:c[1],id:c[2],w:c[3].split(";").map(x=>{const a=x.split("|");return{en:a[0],id:a[1],e:a[2]}})}));
+const ALL=CATS.flatMap(c=>c.w);
+const SE=("I like apples.|Aku suka apel.;The cat is small.|Kucing itu kecil.;We eat rice.|Kami makan nasi.;The sun is hot.|Matahari itu panas.;She reads a book.|Dia membaca buku.;The bird can fly.|Burung bisa terbang.;My mother is kind.|Ibuku baik hati.;He has a red car.|Dia punya mobil merah.;My father cooks dinner.|Ayahku memasak makan malam.;We go to school by bus.|Kami pergi ke sekolah naik bus.;I drink milk every morning.|Aku minum susu setiap pagi.;The moon shines at night.|Bulan bersinar di malam hari.;They play in the park.|Mereka bermain di taman.;The teacher helps the students.|Guru membantu para murid.").split(";").map(x=>{const a=x.split("|");return{en:a[0],id:a[1]}});
+const T={id:{play:"Main",cats:"Kategori",map:"Peta Petualangan",ach:"Prestasi",stats:"Statistik",set:"Pengaturan",guide:"Panduan",info:"Info Produk",daily:"Tantangan Harian",back:"Kembali",next:"Lanjut",retry:"Ulangi",level:"Level",st:["Pemula","Dasar","Menengah","Lanjutan"],good:["Hebat!","Keren!","Benar sekali!","Mantap!"],oops:"Hampir! Jawaban benar:",tr:"Artinya",lang:"Bahasa",music:"Musik latar",sound:"Efek suara",voice:"Suara pengucapan",volume:"Volume",reset:"Hapus semua progres",resetq:"Yakin hapus semua progres?",quit:"Keluar dari permainan?",xp:"XP",coins:"Koin",stars:"Bintang",ans:"Soal dijawab",acc:"Akurasi",words:"Kata dipelajari",streak:"Hari beruntun",lock:"Terkunci",unl:"Buka di level",tap:"Ketuk untuk mulai",done:"Selesai hari ini ✔",cont:"Lanjutkan Petualangan",mode:"Mode",mix:"Campur",fail:"Ayo coba lagi, kamu pasti bisa!",win:"Level selesai!",newa:"Prestasi baru!",brk:"Sudah banyak bermain hari ini. Istirahat dulu ya, minum air dan lihat yang jauh! 🌿",noa:"Suara tidak didukung perangkat ini, baca kata di layar.",pa:"Putar suara",bk:"Hapus",listen:"Ketuk speaker lalu pilih gambar",
+mn:["Cocokkan Gambar","Susun Huruf","Tebak Kata","Huruf Hilang","Dengar & Pilih","Susun Kalimat"],
+i:["Pilih kata yang cocok dengan gambar","Susun huruf menjadi kata","Tebak kata dari gambar dengan mengetik","Pilih huruf yang hilang","Dengarkan, lalu pilih gambar yang benar","Susun kata menjadi kalimat. Artinya:"],
+gd:["Pilih Level di Peta Petualangan atau Kategori untuk latihan bebas.","Tiap level punya 5 soal. Jawab benar ≥3 untuk lulus dan buka level berikutnya.","Dapatkan XP, koin, bintang dan prestasi. Tantangan Harian memberi bonus.","Ketuk 🔊 untuk mendengar pengucapan. Bahasa bisa diubah di Pengaturan.","Belajar 10–15 menit sehari sudah cukup. Orang tua dapat mendampingi."],
+sel:"Penjual",con:"Kontak",lic:"Lisensi",ver:"Versi",about:"WORD QUEST adalah game belajar kosakata bahasa Inggris untuk anak usia 5–12 tahun: 12 kategori, 6 mode permainan, 50 level. Tanpa iklan, tanpa internet.",
+an:["Langkah Pertama","10 Kata","50 Kata","50 Jawaban Benar","30 Bintang","Pahlawan Harian","Level 10","Level 25","Juara Level 50","Rajin 3 Hari"]},
+en:{play:"Play",cats:"Categories",map:"Adventure Map",ach:"Achievements",stats:"Statistics",set:"Settings",guide:"How to Play",info:"Product Info",daily:"Daily Challenge",back:"Back",next:"Next",retry:"Retry",level:"Level",st:["Beginner","Elementary","Intermediate","Advanced"],good:["Great!","Awesome!","Well done!","Super!"],oops:"Almost! The answer is:",tr:"Meaning",lang:"Language",music:"Music",sound:"Sound effects",voice:"Voice pronunciation",volume:"Volume",reset:"Erase all progress",resetq:"Erase all progress?",quit:"Leave the game?",xp:"XP",coins:"Coins",stars:"Stars",ans:"Questions answered",acc:"Accuracy",words:"Words learned",streak:"Day streak",lock:"Locked",unl:"Unlocks at level",tap:"Tap to start",done:"Done today ✔",cont:"Continue Adventure",mode:"Mode",mix:"Mix",fail:"Let's try again, you can do it!",win:"Level complete!",newa:"New achievement!",brk:"You've played a lot today. Take a break: drink water and look far away! 🌿",noa:"Audio is not supported on this device, read the word on screen.",pa:"Play sound",bk:"Delete",listen:"Tap the speaker, then pick the picture",
+mn:["Picture Match","Word Scramble","Guess the Word","Missing Letters","Listen & Choose","Sentence Builder"],
+i:["Choose the word that matches the picture","Put the letters in order to make the word","Guess the word by typing it","Pick the missing letter","Listen, then choose the right picture","Build the sentence. Meaning:"],
+gd:["Pick a Level on the Adventure Map or a Category for free practice.","Each level has 5 questions. Answer 3 or more correctly to pass and unlock the next level.","Earn XP, coins, stars and achievements. The Daily Challenge gives a bonus.","Tap 🔊 to hear the pronunciation. Change the language in Settings.","10–15 minutes a day is enough. Parents are welcome to play along."],
+sel:"Seller",con:"Contact",lic:"License",ver:"Version",about:"WORD QUEST is an English vocabulary game for ages 5–12: 12 categories, 6 game modes, 50 levels. No ads, no internet needed.",
+an:["First Step","10 Words","50 Words","50 Correct Answers","30 Stars","Daily Hero","Level 10","Level 25","Level 50 Champion","3-Day Streak"]}};
+/* ===== STATE ===== */
+const K="wordquest_v1";
+let S={xp:0,coins:0,max:0,stars:{},lang:"id",music:true,sfx:true,voice:true,vol:.7,ans:0,cor:0,words:{},days:[],dn:0,daily:"",sess:{d:"",n:0},ach:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem(K)||"{}"))}catch(e){}
+const sv=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const t=k=>T[S.lang][k],$=s=>document.querySelector(s),today=()=>new Date().toISOString().slice(0,10);
+const sh=a=>{a=a.slice();for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const plv=()=>Math.floor(S.xp/100)+1,tstars=()=>Object.values(S.stars).reduce((a,b)=>a+b,0);
+const mode=L=>(L-1+Math.floor((L-1)/6))%6;
+const WIKO=s=>`<svg class="mas" width="${s}" height="${s}" viewBox="0 0 120 120"><ellipse cx="60" cy="110" rx="32" ry="7" fill="#0003"/><path d="M26 52 22 12 52 34ZM94 52 98 12 68 34Z" fill="#ffc83d"/><circle cx="60" cy="66" r="44" fill="#8b5cf6"/><circle cx="60" cy="78" r="29" fill="#ede9fe"/><circle cx="45" cy="58" r="9" fill="#fff"/><circle cx="75" cy="58" r="9" fill="#fff"/><circle cx="47" cy="60" r="4.5" fill="#241552"/><circle cx="77" cy="60" r="4.5" fill="#241552"/><path d="M48 76Q60 90 72 76" stroke="#241552" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="34" cy="74" r="5" fill="#ff5d7a" opacity=".6"/><circle cx="86" cy="74" r="5" fill="#ff5d7a" opacity=".6"/><path d="M60 24Q52 8 66 6Q64 16 60 24Z" fill="#2fcf8f"/></svg>`;
+/* ===== AUDIO ===== */
+let AC,mt;
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state=="suspended")AC.resume();return AC}
+function bp(f,d,ty,g,at){const a=ac();if(!a)return;const o=a.createOscillator(),v=a.createGain(),n=a.currentTime+(at||0);o.type=ty;o.frequency.value=f;v.gain.setValueAtTime(g*S.vol,n);v.gain.exponentialRampToValueAtTime(.001,n+d);o.connect(v);v.connect(a.destination);o.start(n);o.stop(n+d)}
+const sfx=ok=>{if(!S.sfx)return;ok?[523,659,784,1047].forEach((f,i)=>bp(f,.25,"triangle",.25,i*.08)):[220,175].forEach((f,i)=>bp(f,.3,"sawtooth",.1,i*.12))};
+function mus(){clearInterval(mt);if(!S.music)return;const n=[262,330,392,330,294,349,440,349];let i=0;mt=setInterval(()=>{if(AC&&AC.state=="running")bp(n[i++%8],.5,"sine",.07)},520)}
+function say(w){if(!S.voice||!("speechSynthesis" in window))return false;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang="en-US";u.rate=.8;u.volume=S.vol;speechSynthesis.speak(u);return true}catch(e){return false}}
+document.addEventListener("pointerdown",()=>{if(!AC){ac();mus()}},{once:true});
+function conf(){"🎉⭐✨🎈💛".split("").length;for(let i=0;i<22;i++){const e=document.createElement("div");e.className="conf";e.textContent=["🎉","⭐","✨","🎈","💛"][i%5];e.style.left=Math.random()*95+"%";e.style.animationDelay=Math.random()*.5+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),2500)}}
+/* ===== SCREENS ===== */
+const A=$("#app"),hud=()=>`<div class="hud"><span class="chip">⭐ ${tstars()}</span><span class="chip">🪙 ${S.coins}</span><span class="chip">${t("xp")} ${S.xp}</span><span class="chip">${t("level")} ${plv()}</span></div>`;
+const bk=()=>`<div class="top"><button class="ib" onclick="menu()" aria-label="${t("back")}">←</button></div>`;
+function splash(){A.innerHTML=`<div class="center" onclick="menu()" style="padding-top:8vh">${WIKO(160)}<div class="logo">WORD QUEST<small>ENGLISH VOCABULARY ADVENTURE</small></div><p class="ins" style="margin-top:40px">${t("tap")}</p></div>`;setTimeout(()=>{if($(".logo"))menu()},2600)}
+function menu(){const nx=Math.min(50,S.max+1),dd=S.daily==today();
+A.innerHTML=`<div class="center">${WIKO(110)}<div class="logo" style="font-size:44px">WORD QUEST</div></div>${hud()}<div class="bar" style="margin:4px 0 14px"><i style="width:${S.xp%100}%"></i></div>
+<button class="btn g" onclick="lvl(${nx})">▶ ${t("cont")} (${t("level")} ${nx})</button>
+<button class="btn y" onclick="daily()" ${dd?"disabled":""}>🎁 ${t("daily")}${dd?" – "+t("done"):""}</button>
+<div class="row"><button class="btn" onclick="cats()">📚 ${t("cats")}</button><button class="btn" onclick="map()">🗺️ ${t("map")}</button><button class="btn" onclick="achs()">🏆 ${t("ach")}</button><button class="btn" onclick="stats()">📊 ${t("stats")}</button><button class="btn" onclick="sett()">⚙️ ${t("set")}</button><button class="btn" onclick="guide()">❓ ${t("guide")}</button></div>
+<button class="btn r" onclick="info()">ℹ️ ${t("info")}</button>`}
+function map(){let h=bk()+hud(),L=1;[[10,0],[25,1],[40,2],[50,3]].forEach(([e,i])=>{h+=`<div class="stage">${t("st")[i]} (${L}–${e})</div><div class="map">`;for(;L<=e;L++){const lk=L>S.max+1,s=S.stars[L]||0;h+=`<button class="node ${lk?"l":""}" ${lk?"disabled":""} onclick="lvl(${L})">${lk?"🔒":L}<small>${"★".repeat(s)}</small></button>`}h+="</div>"});A.innerHTML=h}
+let PM=-1;
+function cats(){let h=bk()+hud()+`<div class="mchips"><span class="chip ${PM<0?"on":""}" onclick="PM=-1;cats()">${t("mix")}</span>${t("mn").map((n,i)=>`<span class="chip ${PM==i?"on":""}" onclick="PM=${i};cats()">${n}</span>`).join("")}</div><div class="cats">`;
+CATS.forEach((c,i)=>{const lk=S.max<i*3;h+=`<button class="cat ${lk?"l":""}" ${lk?"disabled":""} onclick="prac(${i})"><span>${lk?"🔒":c.e}</span>${c[S.lang]}${lk?`<br><small>${t("unl")} ${i*3}</small>`:""}</button>`});A.innerHTML=h+"</div>"}
+function achD(){const w=Object.keys(S.words).length,st=streak();return[S.max>=1,w>=10,w>=50,S.cor>=50,tstars()>=30,S.dn>=1,S.max>=10,S.max>=25,S.max>=50,st>=3]}
+const AE=["👣","🔟","📘","🎯","🌟","🎁","🥉","🥈","👑","🔥"];
+function streak(){let n=0,d=new Date();while(S.days.includes(d.toISOString().slice(0,10))){n++;d.setDate(d.getDate()-1)}return n}
+function achs(){const d=achD();A.innerHTML=bk()+`<div class="card"><h2>🏆 ${t("ach")} (${d.filter(x=>x).length}/${d.length})</h2>${d.map((x,i)=>`<div class="ach ${x?"":"l"}"><span>${AE[i]}</span><b>${t("an")[i]}</b></div>`).join("")}</div>`}
+function stats(){const wc=CATS.map(c=>c.w.filter(w=>S.words[w.en]).length);A.innerHTML=bk()+hud()+`<div class="card"><h2>📊 ${t("stats")}</h2><p>${t("ans")}: <b>${S.ans}</b><br>${t("acc")}: <b>${S.ans?Math.round(S.cor*100/S.ans):0}%</b><br>${t("words")}: <b>${Object.keys(S.words).length}/${ALL.length}</b><br>${t("streak")}: <b>${streak()}</b></p>${CATS.map((c,i)=>`${c.e} ${c[S.lang]} ${wc[i]}/8<div class="sb"><i style="width:${wc[i]*12.5}%"></i></div>`).join("")}</div>`}
+function sett(){A.innerHTML=bk()+`<div class="card"><h2>⚙️ ${t("set")}</h2><div class="tg">${t("lang")}<span class="row"><button class="opt" onclick="sl('id')">🇮🇩 ID</button><button class="opt" onclick="sl('en')">🇬🇧 EN</button></span></div>
+${[["music","music"],["sfx","sound"],["voice","voice"]].map(([k,l])=>`<div class="tg">${t(l)}<button class="opt" onclick="tg('${k}')">${S[k]?"ON":"OFF"}</button></div>`).join("")}
+<div class="tg">${t("volume")}<input type="range" min="0" max="1" step=".1" value="${S.vol}" oninput="S.vol=+this.value;sv()"></div>
+<button class="btn r" onclick="if(confirm(t('resetq'))){localStorage.removeItem(K);location.reload()}">${t("reset")}</button></div>`}
+const sl=l=>{S.lang=l;document.documentElement.lang=l;sv();sett()},tg=k=>{S[k]=!S[k];sv();if(k=="music")mus();sett()};
+function guide(){A.innerHTML=bk()+`<div class="card"><h2>❓ ${t("guide")}</h2>${t("gd").map(x=>`<p>• ${x}</p>`).join("")}<h3>${t("mode")}</h3>${t("mn").map((n,i)=>`<p><b>${n}</b>: ${t("i")[i].replace(/\.? ?(Artinya|Meaning):?$/,"")}</p>`).join("")}</div>`}
+function info(){A.innerHTML=bk()+`<div class="card center">${WIKO(90)}<h2>WORD QUEST v${CFG.version}</h2><p>${t("about")}</p><p><b>${t("sel")}:</b> ${CFG.seller}<br><b>${t("con")}:</b> ${CFG.contact}</p><p><b>${t("lic")}:</b><br>${CFG.license[S.lang]}</p></div>`}
+/* ===== GAME ENGINE ===== */
+let G;
+const opts=(w,P,n)=>sh(sh(P.filter(x=>x.en!=w.en)).slice(0,n-1).concat(w));
+function build(L,cat,m,dl){const P=L>40||dl?ALL:CATS[cat].w,sp=P.filter(w=>w.en.length<=4+(L/5|0)),Q=(m==1||m==2)&&sp.length>=5&&!dl?sp:P,ws=sh(Q).slice(0,5),n=L>10?4:3;
+return ws.map((w,k)=>{const mm=dl?Math.floor(Math.random()*6):m,q={m:mm,w,err:0,ans:[]};
+if(mm<5)q.p=P;
+if(mm==0||mm==4)q.o=opts(w,P,n);
+if(mm==1){let s;do s=sh([...w.en]);while(s.join("")==w.en&&w.en.length>1);q.pool=s.map(c=>({t:c,u:0}));q.n=w.en.length}
+if(mm==2)q.n=w.en.length;
+if(mm==3){const nb=Math.min(1+(L/17|0),w.en.length-2),idx=sh([...w.en].map((c,i)=>i)).slice(0,nb).sort((a,b)=>a-b);q.b=idx;q.fill=[];q.bo=idx.map(i=>{const c=w.en[i];return sh(sh([..."abcdefghijklmnopqrstuvwxyz"].filter(x=>x!=c)).slice(0,3).concat(c))})}
+if(mm==5){const s=dl?SE[Math.random()*SE.length|0]:SE[Math.min(SE.length-1,Math.floor((L-1)/50*(SE.length-4))+k)];q.s=s;const ws2=s.en.split(" ");let x;do x=sh(ws2);while(x.join(" ")==s.en&&ws2.length>1);q.pool=x.map(c=>({t:c,u:0}));q.n=ws2.length}
+return q})}
+function lvl(L){if(L>50)L=50;G={ty:"level",L,qs:build(L,(L-1)%12,mode(L)),i:0,c:0};rq()}
+function prac(ci){const L=Math.max(1,Math.min(50,S.max+1)),m=PM<0?(Math.random()*6|0):PM;G={ty:"prac",L,qs:build(L,ci,m),i:0,c:0};rq()}
+function daily(){G={ty:"daily",L:15,qs:build(15,0,0,1),i:0,c:0};rq()}
+function quit(){if(confirm(t("quit")))menu()}
+function rq(){const q=G.qs[G.i],m=q.m;
+let h=`<div class="top"><button class="ib" onclick="quit()" aria-label="X">✕</button><div class="bar"><i style="width:${G.i*100/G.qs.length}%"></i></div><span>${G.i+1}/${G.qs.length}</span></div><p class="ins">${t("mn")[m]}<br><small>${t("i")[m]}</small></p><div class="card">`;
+if(m==0)h+=`<div class="big">${q.w.e}</div>`+ch(q,x=>x.en,"");
+if(m==4)h+=`<div class="center"><button class="btn y" onclick="spk()">🔊 ${t("pa")}</button><div id="na"></div></div>`+ch(q,x=>x.e,"e");
+if(m==1||m==5)h+=(m==5?`<p class="center"><b>${q.s.id}</b></p>`:`<div class="big">${q.w.e}</div>`)+`<div class="slots ${q.sh?"shake":""}">${q.ans.map((p,k)=>`<button class="tile" onclick="ra(${k})">${q.pool[p].t}</button>`).join("")||"&nbsp;"}</div><div class="pool">${q.pool.map((p,i)=>`<button class="tile ${p.u?"u":""}" onclick="ta(${i})">${p.t}</button>`).join("")}</div>`;
+if(m==2){h+=`<div class="big">${q.w.e}</div><div class="slots ${q.sh?"shake":""}">${[...Array(q.n)].map((_,i)=>`<div class="slot ${q.ans[i]?"f":""}">${q.ans[i]||""}</div>`).join("")}</div><div class="kb">${["qwertyuiop","asdfghjkl","zxcvbnm"].map((r,ri)=>`<div>${[...r].map(c=>`<button class="tile" onclick="kk('${c}')">${c}</button>`).join("")}${ri==2?`<button class="tile" style="background:var(--c)" onclick="kk('<')" aria-label="${t("bk")}">⌫</button>`:""}</div>`).join("")}</div>`}
+if(m==3){const f=q.fill.length;h+=`<div class="big">${q.w.e}</div><div class="slots ${q.sh?"shake":""}">${[...q.w.en].map((c,i)=>{const bi=q.b.indexOf(i);return`<div class="slot ${bi>=0&&bi<f?"f":""} ${bi==f?"cur":""}">${bi<0?c:bi<f?c:"_"}</div>`}).join("")}</div>`;
+if(f<q.b.length)h+=`<div class="pool">${q.bo[f].map(c=>`<button class="tile" onclick="bl('${c}')">${c}</button>`).join("")}</div>`}
+h+="</div>";
+if(q.done){const w=q.w,ok=q.ok,tx=m==5?`${q.s.en}</b><br>${t("tr")}: ${q.s.id}`:`${w.e} ${w.en}</b><br>${t("tr")}: ${w.id}`;
+h+=`<div class="fb ${ok?"g":"b"}">${ok?"🎉 "+t("good")[G.i%4]:"💪 "+t("oops")}<br><b>${tx}<br><button class="opt" onclick="say('${m==5?q.s.en.replace(/'/g,""):w.en}')">🔊</button><button class="btn g" onclick="nx()">${t("next")} →</button></div>`}
+A.innerHTML=h;
+if(m==4&&!q.said){q.said=1;if(!say(q.w.en))$("#na").innerHTML=`<p><b style="font-size:28px">${q.w.en}</b><br><small>${t("noa")}</small></p>`}}
+function ch(q,f,c){return`<div class="row" style="margin-top:12px">${q.o.map((x,i)=>`<button class="opt ${c} ${q.done?(x.en==q.w.en?"ok":i==q.sel?"no":""):""}" ${q.done?"disabled":""} onclick="pk(${i})">${f(x)}</button>`).join("")}</div>`}
+const cq=()=>G.qs[G.i];
+function spk(){const q=cq();if(!say(q.w.en))$("#na").innerHTML=`<p><b style="font-size:28px">${q.w.en}</b><br><small>${t("noa")}</small></p>`}
+function pk(i){const q=cq();if(q.done)return;q.sel=i;fin(q.o[i].en==q.w.en)}
+function ta(i){const q=cq();if(q.done||q.pool[i].u)return;q.pool[i].u=1;q.ans.push(i);if(q.ans.length==q.n)chk();else rq()}
+function ra(k){const q=cq();if(q.done)return;q.pool[q.ans[k]].u=0;q.ans.splice(k,1);rq()}
+function kk(c){const q=cq();if(q.done)return;if(c=="<")q.ans.pop();else if(q.ans.length<q.n)q.ans.push(c);if(q.ans.length==q.n)chk();else rq()}
+function bl(c){const q=cq();if(c==q.w.en[q.b[q.fill.length]]){q.fill.push(c);bp(660,.1,"sine",.2);if(q.fill.length==q.b.length)fin(!q.err);else rq()}else{q.err=1;sfx(false);q.sh=1;rq();q.sh=0}}
+function chk(){const q=cq(),v=q.m==5?q.ans.map(i=>q.pool[i].t).join(" "):q.m==1?q.ans.map(i=>q.pool[i].t).join(""):q.ans.join(""),tg=q.m==5?q.s.en:q.w.en;
+if(v==tg)fin(!q.err);else{q.err=1;sfx(false);q.sh=1;rq();q.sh=0;setTimeout(()=>{if(cq()===q&&!q.done){q.ans=[];if(q.pool)q.pool.forEach(p=>p.u=0);rq()}},650)}}
+function fin(ok){const q=cq();q.done=1;q.ok=ok;G.c+=ok?1:0;S.ans++;if(ok){S.cor++;S.words[q.w.en]=1;conf()}sfx(ok);if(ok)setTimeout(()=>say(q.m==5?q.s.en:q.w.en),500);sv();rq()}
+function nx(){G.i++;if(G.i>=G.qs.length)end();else rq()}
+function end(){const c=G.c,st=c>=5?3:c>=4?2:c>=3?1:0,pass=st>0,td=today();let xp=c*10+st*5,co=c*2+st*3;
+if(G.ty=="level"&&pass){S.max=Math.max(S.max,G.L);S.stars[G.L]=Math.max(S.stars[G.L]||0,st)}
+if(G.ty=="daily"){S.daily=td;S.dn++;xp+=30;co+=20}
+const before=achD();S.xp+=xp;S.coins+=co;if(!S.days.includes(td))S.days=S.days.concat(td).slice(-60);
+if(S.sess.d!=td)S.sess={d:td,n:0};S.sess.n++;
+const after=achD(),na=after.map((x,i)=>x&&!S.ach[i]?i:-1).filter(i=>i>=0);na.forEach(i=>{S.ach[i]=1;S.coins+=10});sv();
+if(pass)conf();sfx(pass);
+const nxt=G.ty=="level"&&pass&&G.L<50?`<button class="btn g" onclick="lvl(${G.L+1})">${t("next")} →</button>`:"";
+A.innerHTML=`<div class="card center">${WIKO(90)}<h2>${pass?t("win"):t("fail")}</h2><div class="stars">${"⭐".repeat(st)}${"☆".repeat(3-st)}</div><p>✔ ${c}/5 &nbsp; +${xp} ${t("xp")} &nbsp; +${co} 🪙</p>${na.map(i=>`<p class="chip" style="background:var(--s);color:var(--n)">${AE[i]} ${t("newa")} ${t("an")[i]}</p>`).join("")}${S.sess.n>=5?`<p>${t("brk")}</p>`:""}</div>${nxt}<button class="btn y" onclick="${G.ty=="level"?`lvl(${G.L})`:G.ty=="prac"?"cats()":"menu()"}">↻ ${t("retry")}</button><button class="btn" onclick="${G.ty=="level"?"map()":"menu()"}">${t("back")}</button>`}
+document.documentElement.lang=S.lang;splash();
+</script></body></html>
